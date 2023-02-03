@@ -6,18 +6,21 @@ import 'package:themoviesapp/feature/themoviesapp/movies_list/model/movie_list_m
 
 class MovieDetailState extends Equatable {
   final bool? isLoading;
+  final bool isError;
   final MovieDetailModel? movie;
 
-  MovieDetailState({this.movie, this.isLoading});
+  MovieDetailState({this.movie, this.isLoading, this.isError = false});
 
   @override
-  List<Object?> get props => [isLoading, movie];
+  List<Object?> get props => [isLoading, movie, isError];
 
   MovieDetailState copyWith({
     bool? isLoading,
+    bool? isError,
     MovieDetailModel? movie,
   }) {
     return MovieDetailState(
+      isError: isError ?? this.isError,
       isLoading: isLoading ?? this.isLoading,
       movie: movie ?? this.movie,
     );

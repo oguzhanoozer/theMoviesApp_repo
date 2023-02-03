@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kartal/kartal.dart';
 import 'package:themoviesapp/feature/themoviesapp/movie_detail/model/movie_detail_model.dart';
 import 'package:themoviesapp/feature/themoviesapp/movie_detail/service/movie_detail_service.dart';
+import 'package:themoviesapp/product/mixin/mixin_utility.dart';
 
 import '../../../../network/network_manager.dart';
 import '../../../../product/constants/application_constants.dart';
+import '../../../../product/widget/card_widget.dart';
 import '../../../../product/widget/empty_sizedbox_shrink.dart';
 import '../../../../product/widget/movie_image_load.dart';
 import '../../../product/widget/text_widgets.dart';
@@ -21,7 +24,8 @@ class MovieDetailView extends StatefulWidget {
   State<MovieDetailView> createState() => _MovieDetailViewState();
 }
 
-class _MovieDetailViewState extends State<MovieDetailView> {
+class _MovieDetailViewState extends State<MovieDetailView>
+    with SnackBarWidgetMixin {
   @override
   void initState() {
     super.initState();
@@ -34,124 +38,147 @@ class _MovieDetailViewState extends State<MovieDetailView> {
           MovieDetailCubit(MoviesDetailService(NetworkManager.instance.dio))
             ..fetchMovieDetail(movieId: widget.movieID),
       child: BlocConsumer<MovieDetailCubit, MovieDetailState>(
-        listener: (context, state) {},
+        listener: (context, state) {
+          if (state.isError) {
+            buildSnackBar();
+          }
+        },
         builder: (context, state) {
           return state.isLoading ?? false
               ? const Center(child: CircularProgressIndicator())
-              : _buildScaffoldWidget(state, context);
+              : _buildScaffoldWidget(state.movie, context);
         },
       ),
     );
   }
 
-  Scaffold _buildScaffoldWidget(MovieDetailState state, BuildContext context) {
+  Scaffold _buildScaffoldWidget(MovieDetailModel? movie, BuildContext context) {
     return Scaffold(
-        appBar: _buildAppBar(state),
-        body: _buildDetailRowWidget(state, context));
+        appBar: _buildAppBar(movie),
+        body: movie != null
+            ? _buildDetailRowWidget(movie, context)
+            : const EmptySizedBoxShrink());
   }
 
-  Row _buildDetailRowWidget(MovieDetailState state, BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Expanded(
-          flex: 1,
-          child: _movieImageWidget(context, state),
-        ),
-        state.movie != null
-            ? Expanded(
-                flex: 1,
-                child: _buildDetailColumn(state, context),
-              )
-            : const EmptySizedBoxShrink()
-      ],
+  Widget _buildDetailRowWidget(MovieDetailModel movie, BuildContext context) {
+    return Padding(
+      padding: context.paddingLow,
+      child: Column(
+        children: [
+          CardWidget(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  flex: 4,
+                  child: _movieImageWidget(context, movie),
+                ),
+                Expanded(
+                  flex: 6,
+                  child: _buildDetailColumn(movie, context),
+                )
+              ],
+            ),
+          ),
+          SizedBox(height: context.lowValue),
+          Expanded(
+              flex: 1,
+              child: movie.genres.isNotNullOrEmpty
+                  ? _buildMovieTypeWidget(context, movie)
+                  : const EmptySizedBoxShrink())
+        ],
+      ),
     );
   }
 
-  Padding _movieImageWidget(BuildContext context, MovieDetailState state) {
+  Padding _movieImageWidget(BuildContext context, MovieDetailModel movie) {
     return Padding(
       padding: context.paddingLow,
       child: Stack(
-        children: [_buildMovieImage(state), _buildVoteWidget(state)],
+        children: [_buildMovieImage(movie), _buildVoteWidget(movie)],
       ),
     );
   }
 
-  Column _buildDetailColumn(MovieDetailState state, BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        _buildTitleText(ApplicationConstants.instance.detailText),
-        _buildMovieDetailWidget(state),
-        state.movie!.genres != null
-            ? _buildMovieTypeWidget(context, state)
-            : const EmptySizedBoxShrink()
-      ],
+  Widget _buildDetailColumn(MovieDetailModel movie, BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildTitleText(ApplicationConstants.instance.detailText),
+          context.emptySizedHeightBoxLow,
+          _buildMovieDetailWidget(movie),
+        ],
+      ),
     );
   }
 
-  Column _buildMovieTypeWidget(BuildContext context, MovieDetailState state) {
+  Widget _buildMovieTypeWidget(BuildContext context, MovieDetailModel movie) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         _buildTitleText(ApplicationConstants.instance.typeText),
-        _buildGenreWidget(context, state),
+        _buildGenreWidget(context, movie),
       ],
     );
   }
 
-  SizedBox _buildGenreWidget(BuildContext context, MovieDetailState state) {
+  Widget _buildGenreWidget(BuildContext context, MovieDetailModel movie) {
     return SizedBox(
-      height: context.dynamicHeight(0.4),
+      height: context.dynamicHeight(0.1),
       child: ListView(
-        children: _buildGenreList(state.movie!.genres!),
+        scrollDirection: Axis.horizontal,
+        children: _buildGenreList(movie.genres!),
       ),
     );
   }
 
-  Container _buildMovieDetailWidget(MovieDetailState state) {
-    return Container(
-        padding: const EdgeInsets.all(5.0),
-        constraints: const BoxConstraints.tightForFinite(),
-        child: BodyMediumText(state.movie!.overview.toString(), context));
+  Widget _buildMovieDetailWidget(MovieDetailModel movie) {
+    return BodySmallText(maxLines: 10, movie.overview.toString(), context);
   }
 
-  Positioned _buildVoteWidget(MovieDetailState state) {
+  Positioned _buildVoteWidget(MovieDetailModel movie) {
     return Positioned(
         bottom: 5,
         left: 0,
         child: VoteCardWidget(
             context,
-            state is MovieDetailState && state.movie != null
-                ? state.movie!.voteAverage.toString()
+            movie.voteAverage != null
+                ? movie.voteAverage!.toStringAsFixed(1)
                 : ""));
   }
 
-  MovieImageWidget _buildMovieImage(MovieDetailState state) {
+  MovieImageWidget _buildMovieImage(MovieDetailModel movie) {
     return MovieImageWidget(
-        imagePath: state.movie != null
-            ? state.movie!.posterPath!.posterImagePath
-            : "");
+        imagePath: (movie.posterPath ?? "").posterImagePath);
   }
 
   Widget _buildTitleText(String text) {
-    return BodyMediumText(text, context);
+    return HeadLineText(text, context);
   }
 
-  AppBar _buildAppBar(MovieDetailState state) {
+  AppBar _buildAppBar(MovieDetailModel? movie) {
     return AppBar(
         centerTitle: false,
-        title: HeadLineText(
-            state.movie != null ? state.movie!.title.toString() : "", context));
+        title: FittedBox(
+            child: HeadLineText(movie?.title ?? "".toString(), context)));
   }
 
   List<Widget> _buildGenreList(List<Genres> moviesGenres) {
     List<Widget> widgetList = [];
     for (var genreItem in moviesGenres) {
       if (genreItem.name.isNotNullOrNoEmpty) {
-        widgetList.add(Chip(label: Text(genreItem.name ?? "")));
+        widgetList.add(Padding(
+          padding: EdgeInsets.symmetric(horizontal: context.lowValue / 2),
+          child: Chip(label: Text(genreItem.name ?? "")),
+        ));
       }
     }
     return widgetList;
   }
+
+  @override
+  BuildContext get currentContext => context;
 }

@@ -11,10 +11,14 @@ class MovieDetailCubit extends Cubit<MovieDetailState> {
 
   Future<void> fetchMovieDetail({required int movieId}) async {
     _changeLoading();
-    final movieDetail =
-        await moviesDetailService.getMovieDetail(movieId: movieId);
+    try {
+      final movieDetail =
+          await moviesDetailService.getMovieDetail(movieId: movieId);
 
-    emit(state.copyWith(movie: movieDetail));
+      emit(state.copyWith(movie: movieDetail));
+    } catch (e) {
+      emit(state.copyWith(isError: true));
+    }
     _changeLoading();
   }
 

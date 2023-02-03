@@ -13,7 +13,8 @@ class ApplicationConstants {
   final ThemoviedbImageURL = "https://image.tmdb.org/t/p/w300";
   String detailText = "Detail";
   String typeText = "Type";
-  String searchMovies = "Search movies...";
+  String searchMovies = "Search movies...(Min 2 character)";
+  String allItemsFetched = "All items fetched";
 
   Color greyColor = Colors.grey;
   Color blackColor = Colors.black;
@@ -42,8 +43,9 @@ enum QueriesMap {
 }
 
 enum ImagePathEnum {
-  loadingGif('assets/images/loading.gif'),
-  notFoundImage('assets/images/not_found.png');
+  loadingGif('assets/images/loading_image.gif'),
+
+  notFoundImage('assets/images/no-image-placeholder.png');
 
   final String pathValue;
   const ImagePathEnum(this.pathValue);
@@ -56,3 +58,11 @@ extension MovieImagePathExtension on String {
 
 double kZero = 0;
 double kOne = 1;
+
+enum Durations {
+  low(Duration(milliseconds: 500)),
+  normal(Duration(seconds: 1));
+
+  final Duration value;
+  const Durations(this.value);
+}

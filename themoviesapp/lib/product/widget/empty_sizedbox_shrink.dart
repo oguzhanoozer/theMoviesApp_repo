@@ -5,6 +5,6 @@ class EmptySizedBoxShrink extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox.shrink();
+    return const SizedBox.shrink();
   }
 }

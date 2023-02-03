@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:kartal/kartal.dart';
 import 'package:themoviesapp/product/constants/application_constants.dart';
 
@@ -9,8 +10,23 @@ class BodyMediumText extends Text {
       : super(
           data,
           style: context.textTheme.bodyMedium?.copyWith(
-              fontWeight: FontWeight.bold,
+              // fontWeight: FontWeight.bold,
               color: ApplicationConstants.instance.whiteColor),
+        );
+}
+
+class BodySmallText extends Text {
+  final String data;
+  final BuildContext context;
+  final int? maxLines;
+  BodySmallText(this.data, this.context, {this.maxLines})
+      : super(
+          data,
+          overflow: TextOverflow.ellipsis,
+          maxLines: maxLines,
+          // style: GoogleFonts.alegreya(),
+          style: context.textTheme.bodySmall
+              ?.copyWith(color: ApplicationConstants.instance.whiteColor),
         );
 }
 

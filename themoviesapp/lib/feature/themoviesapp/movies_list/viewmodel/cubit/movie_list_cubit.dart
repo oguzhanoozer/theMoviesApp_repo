@@ -1,8 +1,8 @@
 import 'package:async/async.dart';
 import 'package:bloc/bloc.dart';
-import 'package:flutter/foundation.dart';
 import 'package:themoviesapp/feature/themoviesapp/movies_list/service/movies_list_service.dart';
 import '../../../../../product/constants/application_constants.dart';
+import '../../../../../product/mixin/error_mixin.dart';
 import '../../model/movie_list_model.dart';
 import 'movie_list_state.dart';
 import 'package:kartal/kartal.dart';
@@ -26,9 +26,15 @@ class MovieListCubit extends Cubit<MovieListState> {
 
   Future<void> fetchMovieList() async {
     _changeLoading();
-    final _movieListResponse =
-        await moviesListService.getMoviesList(pageValue: kOne.toInt());
-    emit(state.copyWith(movieAllList: _movieListResponse?.results ?? []));
+
+    try {
+      final movieListResponse =
+          await moviesListService.getMoviesList(pageValue: kOne.toInt());
+      emit(state.copyWith(movieAllList: movieListResponse?.results ?? []));
+    } catch (e) {
+      emit(state.copyWith(isError: true));
+    }
+
     _changeLoading();
   }
 
@@ -43,26 +49,31 @@ class MovieListCubit extends Cubit<MovieListState> {
   }
 
   Future<void> fetchNewMovies() async {
-    if (state.isLoading ?? false) {
+    // if (state.moviesListFull ?? false) return;
+    if (state.moviesListFull ?? false || (state.isLoading ?? false)) {
       return;
     }
     _changeLoading();
+    try {
+      int pageNumber = (state.pageNumber ?? kOne.toInt());
 
-    int pageNumber = (state.pageNumber ?? kOne.toInt());
+      final movieListResponse =
+          await moviesListService.getMoviesList(pageValue: ++pageNumber);
 
-    final movieListResponse =
-        await moviesListService.getMoviesList(pageValue: ++pageNumber);
+      final movieList = movieListResponse?.results ?? [];
+      if (movieList.isNotEmpty || state.movieAllList.isNotNullOrEmpty) {
+        //  List<Movie> resultList = [];
+        state.movieAllList!.addAll(movieList);
+        // resultList = state.movieAllList!;
 
-    final movieList = movieListResponse?.results ?? [];
-    if (movieList.isNotEmpty || state.movieAllList.isNotNullOrEmpty) {
-      List<Movie> resultList = [];
-      state.movieAllList!.addAll(movieList);
-      resultList = state.movieAllList!;
-
-      emit(state.copyWith(
-          movieAllList: resultList,
-          filteredList: resultList,
-          pageNumber: movieListResponse?.page));
+        emit(state.copyWith(
+            movieAllList: state.movieAllList!,
+            filteredList: state.movieAllList!,
+            moviesListFull: movieListResponse?.totalPages == pageNumber,
+            pageNumber: movieListResponse?.page));
+      }
+    } catch (e) {
+      emit(state.copyWith(isError: true));
     }
     _changeLoading();
   }
@@ -71,106 +82,91 @@ class MovieListCubit extends Cubit<MovieListState> {
     if (searchValue.isEmpty || searchOldValue == searchValue) {
       return;
     } else {
-      //   _changeLoading();
-      searchOldValue = searchValue;
-      emit(state.copyWith(
-          pageFilterNumber: kOne.toInt(), filteredList: state.movieAllList));
+      _changeLoading();
+      try {
+        searchOldValue = searchValue;
+        emit(state.copyWith(
+            filterListFull: false,
+            pageFilterNumber: kOne.toInt(),
+            filteredList: state.movieAllList));
 
-      late MoviesListModel? movieSearchListResponse;
-      List<Movie> resultList = [];
-      CancelableOperation<void>? cancellableOperation;
-      cancellableOperation?.cancel();
-      cancellableOperation = CancelableOperation.fromFuture(
-        Future.delayed(Durations.normal.value),
-        onCancel: () {
-          ErrorsMixin.print("Operations was cancelled");
-        },
-      );
+        late MoviesListModel? movieSearchListResponse;
+        List<Movie> resultList = [];
+        CancelableOperation<void>? cancellableOperation;
+        cancellableOperation?.cancel();
+        cancellableOperation = CancelableOperation.fromFuture(
+          Future.delayed(Durations.normal.value),
+          onCancel: () {
+            ErrorsMixin.print("Operations was cancelled");
+          },
+        );
 
-      await cancellableOperation.value.then((value) async {
-        movieSearchListResponse = await moviesListService.getSearchMoviesList(
-            textValue: searchOldValue, pageValue: kOne.toInt());
+        await cancellableOperation.value.then((value) async {
+          movieSearchListResponse = await moviesListService.getSearchMoviesList(
+              textValue: searchOldValue, pageValue: kOne.toInt());
 
-        resultList = movieSearchListResponse?.results ?? [];
-      });
+          resultList = movieSearchListResponse?.results ?? [];
+        });
 
-      emit(state.copyWith(
-        isUpdated: true,
-        filteredList: resultList,
-      ));
-      //  _changeLoading();
+        emit(state.copyWith(
+          isUpdated: true,
+          filteredList: resultList,
+        ));
+      } catch (e) {
+        emit(state.copyWith(isError: true));
+      }
+      _changeLoading();
     }
   }
 
+  bool isAllFetchData() {
+    return state.isUpdated
+        ? state.filterListFull ?? false
+        : state.moviesListFull ?? false;
+  }
+
   Future<void> fetchNewFilterMoviesByItems(String searchValue) async {
-    if (searchValue.isEmpty && (state.isLoading ?? false)) {
+    //if (state.filterListFull ?? false) return;
+    if ((state.filterListFull ?? false) ||
+        (searchValue.isEmpty && (state.isLoading ?? false))) {
       return;
     } else {
-      print("searchOldValue" + searchOldValue);
-      print("searchValue" + searchValue);
-      // if (searchOldValue != searchValue) {
-      //   emit(state.copyWith(
-      //     filteredList: [],
-      //     pageFilterNumber: null,
-      //   ));
-      // }
-
       _changeLoading();
+      try {
+        int pageNumber = (state.pageFilterNumber ?? kOne.toInt());
+        //pageNumber++;
 
-      int pageNumber = (state.pageFilterNumber ?? kOne.toInt());
-      pageNumber++;
-      int aaa = pageNumber;
-      print("aaa" + aaa.toString());
+        final movieListResponse = await moviesListService.getSearchMoviesList(
+            textValue: searchValue, pageValue: ++pageNumber);
 
-      final movieListResponse = await moviesListService.getSearchMoviesList(
-          textValue: searchValue, pageValue: pageNumber);
+        final movieList = movieListResponse?.results ?? [];
 
-      final movieList = movieListResponse?.results ?? [];
+        if (movieList.isNotNullOrEmpty && state.filteredList.isNotNullOrEmpty) {
+          //List<Movie> currentList = [];
+          //  currentList = state.filteredList!;
 
-      if (movieList.isNotNullOrEmpty) {
-        print("aaa");
+          state.filteredList!.addAll(movieList);
 
-        List<Movie> currentList = [];
-        currentList = state.filteredList!;
-
-        currentList.addAll(movieList);
-
-        int x = movieListResponse?.page ?? 0;
-        print("xxx" + x.toString());
-
-        emit(state.copyWith(
-            filteredList: currentList,
-            pageFilterNumber: movieListResponse?.page));
+          emit(state.copyWith(
+              filterListFull: movieListResponse?.totalPages == pageNumber,
+              filteredList: state.filteredList!,
+              pageFilterNumber: movieListResponse?.page));
+        }
+      } catch (e) {
+        emit(state.copyWith(isError: true));
       }
       _changeLoading();
     }
   }
 
   void changeIsUpdate() {
-    emit(state.copyWith(isUpdated: !(state.isUpdated)));
-    emit(state.copyWith(filteredList: state.movieAllList));
+    emit(state.copyWith(
+        isUpdated: !(state.isUpdated),
+        filterListFull: false,
+        filteredList: state.movieAllList));
   }
 
   void _changeLoading() {
     emit(state.copyWith(isLoading: !(state.isLoading ?? false)));
   }
-
-  void _changeFilterLoading() {
-    emit(state.copyWith(isLoadingFilter: !(state.isLoadingFilter ?? false)));
-  }
-}
-
-mixin ErrorsMixin {
-  static void print(dynamic key) {
-    if (!kReleaseMode) return;
-    print(key);
-  }
-}
-
-enum Durations {
-  low(Duration(milliseconds: 500)),
-  normal(Duration(seconds: 1));
-
-  final Duration value;
-  const Durations(this.value);
 }

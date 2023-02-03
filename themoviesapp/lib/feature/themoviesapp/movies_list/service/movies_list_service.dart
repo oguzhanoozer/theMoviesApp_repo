@@ -41,7 +41,6 @@ class MoviesListService extends IMoviesListService {
   @override
   Future<MoviesListModel?> getSearchMoviesList(
       {String textValue = "", required int pageValue}) async {
-    print("pageValue:" + pageValue.toString());
     var _response = await networkManager.get(ServicePath.search.pathValue,
         queryParameters: Map.fromEntries([
           QueriesMap.api_key.getMapValue(Environment.apiUrl),

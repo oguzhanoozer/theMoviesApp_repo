@@ -8,13 +8,18 @@ class MovieImageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FadeInImage.assetNetwork(
-        //    fit: BoxFit.fill,
-        imageErrorBuilder: (context, error, stackTrace) {
-          return Image.asset(ImagePathEnum.notFoundImage.pathValue);
-        },
-        placeholder: ImagePathEnum.loadingGif.pathValue,
-        image: imagePath);
+    return Center(
+      child: FadeInImage.assetNetwork(
+          fit: BoxFit.fill,
+          imageErrorBuilder: (context, error, stackTrace) {
+            return Image.asset(
+              ImagePathEnum.notFoundImage.pathValue,
+              fit: BoxFit.fill,
+            );
+          },
+          placeholder: ImagePathEnum.loadingGif.pathValue,
+          image: imagePath),
+    );
   }
 }
 
