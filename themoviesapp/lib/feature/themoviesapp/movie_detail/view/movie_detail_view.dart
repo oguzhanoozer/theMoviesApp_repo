@@ -2,10 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kartal/kartal.dart';
 import 'package:themoviesapp/feature/themoviesapp/movie_detail/model/movie_detail_model.dart';
-import 'package:themoviesapp/feature/themoviesapp/movie_detail/viewmodel/movie_detail_view_cubit.dart';
+import 'package:themoviesapp/feature/themoviesapp/movie_detail/service/movie_detail_service.dart';
 
-import '../../../../product/constants/constants.dart';
+import '../../../../network/network_manager.dart';
+import '../../../../product/constants/application_constants.dart';
+import '../../../../product/widget/empty_sizedbox_shrink.dart';
 import '../../../../product/widget/movie_image_load.dart';
+import '../../../product/widget/text_widgets.dart';
+import '../../../product/widget/vote_card_widget.dart';
+import '../viewmodel/cubit/movie_detail_cubit.dart';
+import '../viewmodel/cubit/movie_detail_state.dart';
 
 class MovieDetailView extends StatefulWidget {
   final int movieID;
@@ -23,13 +29,14 @@ class _MovieDetailViewState extends State<MovieDetailView> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<MovieDetailViewCubit>(
+    return BlocProvider<MovieDetailCubit>(
       create: (context) =>
-          MovieDetailViewCubit()..fetchMovieDetail(movieId: widget.movieID),
-      child: BlocConsumer<MovieDetailViewCubit, MovieDetailStates>(
+          MovieDetailCubit(MoviesDetailService(NetworkManager.instance.dio))
+            ..fetchMovieDetail(movieId: widget.movieID),
+      child: BlocConsumer<MovieDetailCubit, MovieDetailState>(
         listener: (context, state) {},
         builder: (context, state) {
-          return state is MovieDetailLoading
+          return state.isLoading ?? false
               ? const Center(child: CircularProgressIndicator())
               : _buildScaffoldWidget(state, context);
         },
@@ -37,106 +44,105 @@ class _MovieDetailViewState extends State<MovieDetailView> {
     );
   }
 
-  Scaffold _buildScaffoldWidget(MovieDetailStates state, BuildContext context) {
+  Scaffold _buildScaffoldWidget(MovieDetailState state, BuildContext context) {
     return Scaffold(
         appBar: _buildAppBar(state),
         body: _buildDetailRowWidget(state, context));
   }
 
-  Row _buildDetailRowWidget(MovieDetailStates state, BuildContext context) {
+  Row _buildDetailRowWidget(MovieDetailState state, BuildContext context) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(
           flex: 1,
-          child: Padding(
-            padding: context.paddingLow,
-            child: Stack(
-              children: [_buildMovieImage(state), _buildVoteWidget(state)],
-            ),
-          ),
+          child: _movieImageWidget(context, state),
         ),
-        state is MovieDetailLoaded && state.movie != null
+        state.movie != null
             ? Expanded(
                 flex: 1,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    _buildTitleText(ApplicationConstants.detailText),
-                    _buildMovieDetailWidget(state),
-                    state.movie!.genres != null
-                        ? _buildMovieTypeWidget(context, state)
-                        : const SizedBox()
-                  ],
-                ),
+                child: _buildDetailColumn(state, context),
               )
-            : const SizedBox()
+            : const EmptySizedBoxShrink()
       ],
     );
   }
 
-  Column _buildMovieTypeWidget(BuildContext context, MovieDetailLoaded state) {
+  Padding _movieImageWidget(BuildContext context, MovieDetailState state) {
+    return Padding(
+      padding: context.paddingLow,
+      child: Stack(
+        children: [_buildMovieImage(state), _buildVoteWidget(state)],
+      ),
+    );
+  }
+
+  Column _buildDetailColumn(MovieDetailState state, BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        _buildTitleText(ApplicationConstants.typeText),
-        SizedBox(
-          height: context.dynamicHeight(0.4),
-          child: ListView(
-            children: _buildGenreList(state.movie!.genres!),
-          ),
-        ),
+        _buildTitleText(ApplicationConstants.instance.detailText),
+        _buildMovieDetailWidget(state),
+        state.movie!.genres != null
+            ? _buildMovieTypeWidget(context, state)
+            : const EmptySizedBoxShrink()
       ],
     );
   }
 
-  Container _buildMovieDetailWidget(MovieDetailLoaded state) {
+  Column _buildMovieTypeWidget(BuildContext context, MovieDetailState state) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        _buildTitleText(ApplicationConstants.instance.typeText),
+        _buildGenreWidget(context, state),
+      ],
+    );
+  }
+
+  SizedBox _buildGenreWidget(BuildContext context, MovieDetailState state) {
+    return SizedBox(
+      height: context.dynamicHeight(0.4),
+      child: ListView(
+        children: _buildGenreList(state.movie!.genres!),
+      ),
+    );
+  }
+
+  Container _buildMovieDetailWidget(MovieDetailState state) {
     return Container(
         padding: const EdgeInsets.all(5.0),
         constraints: const BoxConstraints.tightForFinite(),
-        child: Text(state.movie!.overview.toString()));
+        child: BodyMediumText(state.movie!.overview.toString(), context));
   }
 
-  Positioned _buildVoteWidget(MovieDetailStates state) {
+  Positioned _buildVoteWidget(MovieDetailState state) {
     return Positioned(
         bottom: 5,
         left: 0,
-        child: Card(
-            color: Colors.grey,
-            child: Padding(
-              padding: context.paddingLow,
-              child: _buildTitleText(
-                state is MovieDetailLoaded && state.movie != null
-                    ? state.movie!.voteAverage.toString()
-                    : "",
-              ),
-            )));
+        child: VoteCardWidget(
+            context,
+            state is MovieDetailState && state.movie != null
+                ? state.movie!.voteAverage.toString()
+                : ""));
   }
 
-  MovieImageWidget _buildMovieImage(MovieDetailStates state) {
+  MovieImageWidget _buildMovieImage(MovieDetailState state) {
     return MovieImageWidget(
-        imagePath: state is MovieDetailLoaded && state.movie != null
+        imagePath: state.movie != null
             ? state.movie!.posterPath!.posterImagePath
             : "");
   }
 
   Widget _buildTitleText(String text) {
-    return Text(
-      text,
-      style: context.textTheme.headline6
-          ?.copyWith(fontWeight: FontWeight.bold, color: Colors.black),
-    );
+    return BodyMediumText(text, context);
   }
 
-  AppBar _buildAppBar(MovieDetailStates state) {
+  AppBar _buildAppBar(MovieDetailState state) {
     return AppBar(
-      centerTitle: false,
-      title: Text(
-        state is MovieDetailLoaded && state.movie != null
-            ? state.movie!.title.toString()
-            : "",
-      ),
-    );
+        centerTitle: false,
+        title: HeadLineText(
+            state.movie != null ? state.movie!.title.toString() : "", context));
   }
 
   List<Widget> _buildGenreList(List<Genres> moviesGenres) {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:themoviesapp/feature/themoviesapp/movie_detail/view/movie_detail_view.dart';
-import 'package:themoviesapp/feature/themoviesapp/movies_list/view/movie_list_view.dart';
+import '../../feature/themoviesapp/movies_list/view/movie_list_view_cubit.dart';
 
 class RouterGen {
   static Route<dynamic> generateRoute(RouteSettings settings) {

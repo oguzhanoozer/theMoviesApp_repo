@@ -1,7 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 part 'movie_list_model.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class MoviesListModel {
   int? page;
   List<Movie>? results;
@@ -22,7 +22,7 @@ class MoviesListModel {
   }
 }
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class Movie {
   /// bool? adult;
   /// String? backdropPath;

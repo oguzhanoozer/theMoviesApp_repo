@@ -23,7 +23,7 @@ MovieDetailModel _$MovieDetailModelFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$MovieDetailModelToJson(MovieDetailModel instance) =>
     <String, dynamic>{
-      'genres': instance.genres,
+      'genres': instance.genres?.map((e) => e.toJson()).toList(),
       'id': instance.id,
       'original_title': instance.originalTitle,
       'overview': instance.overview,

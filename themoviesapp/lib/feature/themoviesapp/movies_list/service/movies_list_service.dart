@@ -4,21 +4,25 @@ import 'package:dio/dio.dart';
 import 'package:themoviesapp/core/modules/environment.dart';
 import 'package:themoviesapp/network/network_manager.dart';
 
-import '../../../../product/constants/constants.dart';
+import '../../../../product/constants/application_constants.dart';
 import '../model/movie_list_model.dart';
 
 abstract class IMoviesListService {
+  IMoviesListService(this.networkManager);
+
   Future<MoviesListModel?> getMoviesList({required int pageValue});
   Future<MoviesListModel?> getSearchMoviesList(
       {required String textValue, required int pageValue});
+
+  final Dio networkManager;
 }
 
 class MoviesListService extends IMoviesListService {
-  Dio dio = NetworkManager.instance.dio;
+  MoviesListService(super.networkManager);
 
   @override
   Future<MoviesListModel?> getMoviesList({required int pageValue}) async {
-    var _response = await dio.get(ServicePath.discover.pathValue,
+    var _response = await networkManager.get(ServicePath.discover.pathValue,
         queryParameters: Map.fromEntries([
           QueriesMap.api_key.getMapValue(Environment.apiUrl),
           QueriesMap.page.getMapValue("${pageValue}")
@@ -37,7 +41,8 @@ class MoviesListService extends IMoviesListService {
   @override
   Future<MoviesListModel?> getSearchMoviesList(
       {String textValue = "", required int pageValue}) async {
-    var _response = await dio.get(ServicePath.search.pathValue,
+    print("pageValue:" + pageValue.toString());
+    var _response = await networkManager.get(ServicePath.search.pathValue,
         queryParameters: Map.fromEntries([
           QueriesMap.api_key.getMapValue(Environment.apiUrl),
           QueriesMap.page.getMapValue("${pageValue}"),

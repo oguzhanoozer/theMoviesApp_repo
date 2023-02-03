@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kartal/kartal.dart';
-import 'package:themoviesapp/product/constants/constants.dart';
+import 'package:themoviesapp/product/constants/application_constants.dart';
+import '../../product/widget/empty_sizedbox_shrink.dart';
 import 'network_change_manager.dart';
 
 class NoNetworkWidget extends StatefulWidget {
@@ -41,22 +42,21 @@ class _NoNetworkWidgetState extends State<NoNetworkWidget> with StateMixin {
   @override
   Widget build(BuildContext context) {
     return AnimatedCrossFade(
-      duration: context.durationLow,
-      crossFadeState: _networkResult == NetworkResult.off
-          ? CrossFadeState.showFirst
-          : CrossFadeState.showSecond,
-      firstChild: Container(
-          height: context.dynamicHeight(0.1),
-          color: context.colorScheme.primary,
-          child: Center(
-            child: FittedBox(
-                child: Text(
-              ApplicationConstants.noInternetConnectionText,
-              style: context.textTheme.bodyMedium,
+        duration: context.durationLow,
+        crossFadeState: _networkResult == NetworkResult.off
+            ? CrossFadeState.showFirst
+            : CrossFadeState.showSecond,
+        firstChild: Container(
+            height: context.dynamicHeight(0.1),
+            color: context.colorScheme.primary,
+            child: Center(
+              child: FittedBox(
+                  child: Text(
+                ApplicationConstants.instance.noInternetConnectionText,
+                style: context.textTheme.bodyMedium,
+              )),
             )),
-          )),
-      secondChild: const SizedBox(),
-    );
+        secondChild: EmptySizedBoxShrink());
   }
 }
 

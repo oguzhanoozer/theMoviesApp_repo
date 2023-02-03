@@ -1,7 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 part 'movie_detail_model.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class MovieDetailModel {
   /// bool? adult;
   /// String? backdropPath;
@@ -58,7 +58,7 @@ class MovieDetailModel {
   }
 }
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class Genres {
   int? id;
   String? name;

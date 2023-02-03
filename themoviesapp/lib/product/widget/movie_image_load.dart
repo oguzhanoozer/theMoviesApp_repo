@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../constants/constants.dart';
+import '../constants/application_constants.dart';
 
 class MovieImageWidget extends StatelessWidget {
   const MovieImageWidget({super.key, required this.imagePath});
@@ -17,3 +17,9 @@ class MovieImageWidget extends StatelessWidget {
         image: imagePath);
   }
 }
+
+/*
+class ProductNetworkManager extends NetworkManager {
+  ProductNetworkManager() : super(options: BaseOptions(baseUrl: ApplicationConstant.instance.baseUrl));
+}
+*/
