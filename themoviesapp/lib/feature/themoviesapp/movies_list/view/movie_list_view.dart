@@ -2,17 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kartal/kartal.dart';
 import 'package:themoviesapp/feature/product/widget/text_widgets.dart';
-import 'package:themoviesapp/feature/themoviesapp/movies_list/model/movie_list_model.dart';
 import 'package:themoviesapp/feature/themoviesapp/movies_list/service/movies_list_service.dart';
+import 'package:themoviesapp/feature/themoviesapp/movies_list/view/movie_card_list_subview.dart';
 import 'package:themoviesapp/product/constants/application_constants.dart';
-import 'package:themoviesapp/product/route/generate_route.dart';
 import 'package:themoviesapp/product/widget/empty_sizedbox_shrink.dart';
-
 import '../../../../network/network_manager.dart';
 import '../../../../product/mixin/mixin_utility.dart';
 import '../../../../product/widget/loading_circular.dart';
 import '../../../../product/widget/textfield_decoration.dart';
-import '../../../product/widget/movie_card.dart';
 import '../viewmodel/cubit/movie_list_cubit.dart';
 import '../viewmodel/cubit/movie_list_state.dart';
 
@@ -46,8 +43,6 @@ class _MovieListViewState extends State<MovieListView>
         await context
             .read<MovieListCubit>()
             .fetchMoreDataList(value: _editingController.text);
-
-        ///context.read<MovieCubit>().fetchNewMovies();
       }
     });
   }
@@ -76,7 +71,7 @@ class _MovieListViewState extends State<MovieListView>
   Scaffold _buildScaffoldWidget(MovieListState state, BuildContext context) {
     return Scaffold(
       body: CustomScrollView(
-        ///physics: const ScrollPhysics().,
+        key: Key(ApplicationConstants.instance.customScrollViewKey),
         controller: _scrollController,
         slivers: [
           _buildSliverApp(state, context),
@@ -90,7 +85,6 @@ class _MovieListViewState extends State<MovieListView>
           ),
         ],
       ),
-      //   bottomNavigationBar: _textWrite(),
     );
   }
 
@@ -112,7 +106,6 @@ class _MovieListViewState extends State<MovieListView>
           _buildTextFieldContainer(state, context),
         ],
       ),
-      // actions: [_loadingCenter()],
       centerTitle: true,
       pinned: true,
     );
@@ -139,27 +132,7 @@ class _MovieListViewState extends State<MovieListView>
     return BlocBuilder<MovieListCubit, MovieListState>(
       builder: (context, state) {
         final list = state.filteredList ?? [];
-        print(list.length);
-        return SliverGrid(
-          delegate: SliverChildBuilderDelegate(
-            (context, index) {
-              return InkWell(
-                onTap: () {
-                  Navigator.pushNamed(context, movieDetailViewRoute,
-                      arguments: list[index].id);
-                },
-                child: MovieCard(movie: list[index], context: context),
-              );
-            },
-            childCount: list.length,
-          ),
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3,
-            // mainAxisSpacing: 0,
-            // crossAxisSpacing: 0,
-            childAspectRatio: 0.5,
-          ),
-        );
+        return MovieCardListSubView(list: list);
       },
     );
   }
@@ -176,19 +149,6 @@ class _MovieListViewState extends State<MovieListView>
       },
     );
   }
-
-  // Widget _textWrite() {
-  //   return BlocSelector<MovieListCubit, MovieListState, bool>(
-  //     selector: (state) {
-  //       var filterFull = state.filterListFull ?? false;
-  //       var movieFull = state.moviesListFull ?? false;
-  //       return filterFull || movieFull;
-  //     },
-  //     builder: (context, state) {
-  //       return state ? Text("hepsi bura") : SizedBox.shrink();
-  //     },
-  //   );
-  // }
 
   @override
   BuildContext get currentContext => context;

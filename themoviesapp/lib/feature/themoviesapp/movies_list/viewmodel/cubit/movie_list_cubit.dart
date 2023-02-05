@@ -49,7 +49,6 @@ class MovieListCubit extends Cubit<MovieListState> {
   }
 
   Future<void> fetchNewMovies() async {
-    // if (state.moviesListFull ?? false) return;
     if (state.moviesListFull ?? false || (state.isLoading ?? false)) {
       return;
     }
@@ -62,9 +61,7 @@ class MovieListCubit extends Cubit<MovieListState> {
 
       final movieList = movieListResponse?.results ?? [];
       if (movieList.isNotEmpty || state.movieAllList.isNotNullOrEmpty) {
-        //  List<Movie> resultList = [];
         state.movieAllList!.addAll(movieList);
-        // resultList = state.movieAllList!;
 
         emit(state.copyWith(
             movieAllList: state.movieAllList!,
@@ -97,13 +94,14 @@ class MovieListCubit extends Cubit<MovieListState> {
         cancellableOperation = CancelableOperation.fromFuture(
           Future.delayed(Durations.normal.value),
           onCancel: () {
-            ErrorsMixin.print("Operations was cancelled");
+            ErrorsMixin.print(
+                ApplicationConstants.instance.operationWasCancelled);
           },
         );
 
         await cancellableOperation.value.then((value) async {
           movieSearchListResponse = await moviesListService.getSearchMoviesList(
-              textValue: searchOldValue, pageValue: kOne.toInt());
+              textValue: searchOldValue.toLowerCase(), pageValue: kOne.toInt());
 
           resultList = movieSearchListResponse?.results ?? [];
         });
@@ -126,7 +124,6 @@ class MovieListCubit extends Cubit<MovieListState> {
   }
 
   Future<void> fetchNewFilterMoviesByItems(String searchValue) async {
-    //if (state.filterListFull ?? false) return;
     if ((state.filterListFull ?? false) ||
         (searchValue.isEmpty && (state.isLoading ?? false))) {
       return;
@@ -134,17 +131,13 @@ class MovieListCubit extends Cubit<MovieListState> {
       _changeLoading();
       try {
         int pageNumber = (state.pageFilterNumber ?? kOne.toInt());
-        //pageNumber++;
 
         final movieListResponse = await moviesListService.getSearchMoviesList(
-            textValue: searchValue, pageValue: ++pageNumber);
+            textValue: searchValue.toLowerCase(), pageValue: ++pageNumber);
 
         final movieList = movieListResponse?.results ?? [];
 
         if (movieList.isNotNullOrEmpty && state.filteredList.isNotNullOrEmpty) {
-          //List<Movie> currentList = [];
-          //  currentList = state.filteredList!;
-
           state.filteredList!.addAll(movieList);
 
           emit(state.copyWith(

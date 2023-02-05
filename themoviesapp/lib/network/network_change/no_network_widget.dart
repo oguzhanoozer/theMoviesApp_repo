@@ -56,7 +56,7 @@ class _NoNetworkWidgetState extends State<NoNetworkWidget> with StateMixin {
                 style: context.textTheme.bodyMedium,
               )),
             )),
-        secondChild: EmptySizedBoxShrink());
+        secondChild: const EmptySizedBoxShrink());
   }
 }
 

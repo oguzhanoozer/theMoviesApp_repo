@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kartal/kartal.dart';
 import 'package:themoviesapp/feature/themoviesapp/movie_detail/model/movie_detail_model.dart';
 import 'package:themoviesapp/feature/themoviesapp/movie_detail/service/movie_detail_service.dart';
 import 'package:themoviesapp/product/mixin/mixin_utility.dart';
-
 import '../../../../network/network_manager.dart';
 import '../../../../product/constants/application_constants.dart';
 import '../../../../product/widget/card_widget.dart';
@@ -66,19 +64,7 @@ class _MovieDetailViewState extends State<MovieDetailView>
       child: Column(
         children: [
           CardWidget(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  flex: 4,
-                  child: _movieImageWidget(context, movie),
-                ),
-                Expanded(
-                  flex: 6,
-                  child: _buildDetailColumn(movie, context),
-                )
-              ],
-            ),
+            child: _cardWidgetChild(context, movie),
           ),
           SizedBox(height: context.lowValue),
           Expanded(
@@ -88,6 +74,22 @@ class _MovieDetailViewState extends State<MovieDetailView>
                   : const EmptySizedBoxShrink())
         ],
       ),
+    );
+  }
+
+  Row _cardWidgetChild(BuildContext context, MovieDetailModel movie) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          flex: 4,
+          child: _movieImageWidget(context, movie),
+        ),
+        Expanded(
+          flex: 6,
+          child: _buildDetailColumn(movie, context),
+        )
+      ],
     );
   }
 
@@ -160,10 +162,12 @@ class _MovieDetailViewState extends State<MovieDetailView>
   }
 
   AppBar _buildAppBar(MovieDetailModel? movie) {
-    return AppBar(
-        centerTitle: false,
-        title: FittedBox(
-            child: HeadLineText(movie?.title ?? "".toString(), context)));
+    return movie != null && movie.title != null && movie.title != ""
+        ? AppBar(
+            centerTitle: false,
+            title: FittedBox(
+                fit: BoxFit.fill, child: HeadLineText(movie.title!, context)))
+        : AppBar();
   }
 
   List<Widget> _buildGenreList(List<Genres> moviesGenres) {

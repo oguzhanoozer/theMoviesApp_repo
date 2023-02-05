@@ -10,11 +10,17 @@ class ApplicationConstants {
   ApplicationConstants._init();
 
   final noInternetConnectionText = "No internet connection!";
-  final ThemoviedbImageURL = "https://image.tmdb.org/t/p/w300";
+  final themovieDbImageURL = "https://image.tmdb.org/t/p/w300";
   String detailText = "Detail";
   String typeText = "Type";
   String searchMovies = "Search movies...(Min 2 character)";
   String allItemsFetched = "All items fetched";
+  String operationWasCancelled = "Operations was cancelled";
+  String moviesNameFieldKey = "moviesNameField";
+  String customScrollViewKey = "customScrollView";
+  String errorOccured = "Opps! An error occured";
+  String noRouteDefined = "No route defined for";
+  String okText = "Ok";
 
   Color greyColor = Colors.grey;
   Color blackColor = Colors.black;
@@ -53,7 +59,7 @@ enum ImagePathEnum {
 
 extension MovieImagePathExtension on String {
   String get posterImagePath =>
-      "${ApplicationConstants.instance.ThemoviedbImageURL}${this}";
+      "${ApplicationConstants.instance.themovieDbImageURL}${this}";
 }
 
 double kZero = 0;

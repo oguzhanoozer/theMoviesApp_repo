@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../constants/application_constants.dart';
 
 class MovieImageWidget extends StatelessWidget {
@@ -22,9 +21,3 @@ class MovieImageWidget extends StatelessWidget {
     );
   }
 }
-
-/*
-class ProductNetworkManager extends NetworkManager {
-  ProductNetworkManager() : super(options: BaseOptions(baseUrl: ApplicationConstant.instance.baseUrl));
-}
-*/

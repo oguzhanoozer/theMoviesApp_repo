@@ -1,9 +1,6 @@
 import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:themoviesapp/core/modules/environment.dart';
-import 'package:themoviesapp/network/network_manager.dart';
-
 import '../../../../product/constants/application_constants.dart';
 import '../model/movie_list_model.dart';
 

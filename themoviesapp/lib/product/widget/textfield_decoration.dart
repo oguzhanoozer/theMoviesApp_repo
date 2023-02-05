@@ -1,8 +1,4 @@
-import 'package:kartal/kartal.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-
 import '../constants/application_constants.dart';
 
 class TextFieldProduct extends StatelessWidget {
@@ -15,6 +11,7 @@ class TextFieldProduct extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
+        key: Key(ApplicationConstants.instance.moviesNameFieldKey),
         textAlignVertical: TextAlignVertical.bottom,
         controller: textEditingController,
         decoration: _buildTextDecoration(),

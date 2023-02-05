@@ -1,11 +1,8 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:kartal/kartal.dart';
 import 'package:themoviesapp/feature/product/widget/vote_card_widget.dart';
-
 import 'package:themoviesapp/feature/themoviesapp/movies_list/model/movie_list_model.dart';
 import 'package:themoviesapp/product/constants/application_constants.dart';
-
 import '../../../product/widget/card_widget.dart';
 import '../../../product/widget/movie_image_load.dart';
 import 'text_widgets.dart';

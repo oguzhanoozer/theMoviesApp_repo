@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:themoviesapp/product/constants/application_constants.dart';
 
 mixin SnackBarWidgetMixin {
   BuildContext get currentContext;
+
   void buildSnackBar() {
     final snackBar = SnackBar(
-      content: const Text('Yay! A SnackBar!'),
+      content: Text(ApplicationConstants.instance.errorOccured),
       action: SnackBarAction(
-        label: 'Undo',
+        label: ApplicationConstants.instance.okText,
         onPressed: () {
-          // Some code to undo the change.
+          ScaffoldMessenger.of(currentContext).hideCurrentSnackBar();
         },
       ),
     );
 
-    // Find the ScaffoldMessenger in the widget tree
-    // and use it to show a SnackBar.
+    ScaffoldMessenger.of(currentContext).hideCurrentSnackBar();
+
     ScaffoldMessenger.of(currentContext).showSnackBar(snackBar);
   }
 }

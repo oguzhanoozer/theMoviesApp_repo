@@ -1,10 +1,7 @@
 import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:themoviesapp/core/modules/environment.dart';
 import 'package:themoviesapp/feature/themoviesapp/movie_detail/model/movie_detail_model.dart';
-
-import '../../../../network/network_manager.dart';
 import '../../../../product/constants/application_constants.dart';
 
 abstract class IMovieDetailService {
