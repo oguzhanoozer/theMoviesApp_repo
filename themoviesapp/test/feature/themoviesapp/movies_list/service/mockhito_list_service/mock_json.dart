@@ -1,0 +1,351 @@
+class MockData {
+  static final listMockJson = {
+    "page": 2,
+    "results": [
+      {
+        "adult": false,
+        "backdrop_path": "/qEXDEtIbGXz4iIcau2O2QLUsAq6.jpg",
+        "genre_ids": [27, 9648, 53],
+        "id": 899579,
+        "original_language": "en",
+        "original_title": "There's Something Wrong with the Children",
+        "overview":
+            "Margaret and Ben take a weekend trip with longtime friends Ellie and Thomas and their two young children. Eventually, Ben begins to suspect something supernatural is occurring when the kids behave strangely after disappearing into the woods overnight.",
+        "popularity": 1050.253,
+        "poster_path": "/e49Sr3Lxfk2psYhv1SzQjs7MeGo.jpg",
+        "release_date": "2023-01-17",
+        "title": "There's Something Wrong with the Children",
+        "video": false,
+        "vote_average": 6.2,
+        "vote_count": 52
+      },
+      {
+        "adult": false,
+        "backdrop_path": "/tsjXBo4LmzV0Bb9hdrz25tzX5GD.jpg",
+        "genre_ids": [10402],
+        "id": 1041513,
+        "original_language": "en",
+        "original_title": "Encanto at the Hollywood Bowl",
+        "overview":
+            "A taped performance of the Encanto Live-to-Film Concert Experience at the Hollywood Bowl. The original cast puts on a miracle of a concert as they sing the favorite songs, accompanied by a full orchestra and 50 person ensemble, and the Hollywood Bowl transforms into Casita!",
+        "popularity": 1021.714,
+        "poster_path": "/sa3Ku5yNVjp8NloWxJoI9dQjvOi.jpg",
+        "release_date": "2022-12-28",
+        "title": "Encanto at the Hollywood Bowl",
+        "video": false,
+        "vote_average": 7.5,
+        "vote_count": 81
+      },
+      // {
+      //   "adult": false,
+      //   "backdrop_path": "/nWs0auTqn2UaFGfTKtUE5tlTeBu.jpg",
+      //   "genre_ids": [10751, 35, 14],
+      //   "id": 668482,
+      //   "original_language": "en",
+      //   "original_title": "Roald Dahl's Matilda the Musical",
+      //   "overview":
+      //       "An extraordinary young girl discovers her superpower and summons the remarkable courage, against all odds, to help others change their stories, whilst also taking charge of her own destiny. Standing up for what's right, she's met with miraculous results.",
+      //   "popularity": 957.667,
+      //   "poster_path": "/ga8R3OiOMMgSvZ4cOj8x7prUNYZ.jpg",
+      //   "release_date": "2022-11-25",
+      //   "title": "Roald Dahl's Matilda the Musical",
+      //   "video": false,
+      //   "vote_average": 6.9,
+      //   "vote_count": 458
+      // },
+      // {
+      //   "adult": false,
+      //   "backdrop_path": "/ub3BAIzgGnkHqUBtUAf3hpG9xMF.jpg",
+      //   "genre_ids": [12, 16, 10751],
+      //   "id": 297270,
+      //   "original_language": "en",
+      //   "original_title": "Tinker Bell and the Legend of the NeverBeast",
+      //   "overview":
+      //       "An ancient myth of a massive creature sparks the curiosity of Tinker Bell and her good friend Fawn, an animal fairy who’s not afraid to break the rules to help an animal in need. But this creature is not welcome in Pixie Hollow — and the scout fairies are determined to capture the mysterious beast, who they fear will destroy their home. Fawn must convince her fairy friends to risk everything to rescue the NeverBeast.",
+      //   "popularity": 774.446,
+      //   "poster_path": "/3S0mmmpYStB3GqodRghcfOt81wQ.jpg",
+      //   "release_date": "2014-12-12",
+      //   "title": "Tinker Bell and the Legend of the NeverBeast",
+      //   "video": false,
+      //   "vote_average": 7.2,
+      //   "vote_count": 839
+      // },
+      // {
+      //   "adult": false,
+      //   "backdrop_path": "/7GmQKKAB3q3xkpxt1VFt2DrfviW.jpg",
+      //   "genre_ids": [53, 80],
+      //   "id": 934287,
+      //   "original_language": "da",
+      //   "original_title": "Klienten",
+      //   "overview":
+      //       "Renowned psychologist Susanne (Signe Egholm Olsen) is caught in a living nightmare when her new client (Anton Hjejle) turns out to be a wanted serial killer.",
+      //   "popularity": 748.06,
+      //   "poster_path": "/oUhZzMpHAMgdRgLbsvBIqhY7fKe.jpg",
+      //   "release_date": "2022-06-20",
+      //   "title": "The Last Client",
+      //   "video": false,
+      //   "vote_average": 8,
+      //   "vote_count": 66
+      // },
+      // {
+      //   "adult": false,
+      //   "backdrop_path": "/sKK5bbQm15jzbMRwCJmPBbv9trN.jpg",
+      //   "genre_ids": [12, 10751, 14],
+      //   "id": 411,
+      //   "original_language": "en",
+      //   "original_title":
+      //       "The Chronicles of Narnia: The Lion, the Witch and the Wardrobe",
+      //   "overview":
+      //       "Siblings Lucy, Edmund, Susan and Peter step through a magical wardrobe and find the land of Narnia. There, they discover a charming, once peaceful kingdom that has been plunged into eternal winter by the evil White Witch, Jadis. Aided by the wise and magnificent lion, Aslan, the children lead Narnia into a spectacular, climactic battle to be free of the Witch's glacial powers forever.",
+      //   "popularity": 734.078,
+      //   "poster_path": "/iREd0rNCjYdf5Ar0vfaW32yrkm.jpg",
+      //   "release_date": "2005-12-07",
+      //   "title":
+      //       "The Chronicles of Narnia: The Lion, the Witch and the Wardrobe",
+      //   "video": false,
+      //   "vote_average": 7.1,
+      //   "vote_count": 9265
+      // },
+      // {
+      //   "adult": false,
+      //   "backdrop_path": "/dKqa850uvbNSCaQCV4Im1XlzEtQ.jpg",
+      //   "genre_ids": [35, 80, 9648],
+      //   "id": 661374,
+      //   "original_language": "en",
+      //   "original_title": "Glass Onion: A Knives Out Mystery",
+      //   "overview":
+      //       "World-famous detective Benoit Blanc heads to Greece to peel back the layers of a mystery surrounding a tech billionaire and his eclectic crew of friends.",
+      //   "popularity": 1056.363,
+      //   "poster_path": "/vDGr1YdrlfbU9wxTOdpf3zChmv9.jpg",
+      //   "release_date": "2022-11-23",
+      //   "title": "Glass Onion: A Knives Out Mystery",
+      //   "video": false,
+      //   "vote_average": 7.1,
+      //   "vote_count": 3183
+      // },
+      // {
+      //   "adult": false,
+      //   "backdrop_path": "/e782pDRAlu4BG0ahd777n8zfPzZ.jpg",
+      //   "genre_ids": [16, 14, 18],
+      //   "id": 555604,
+      //   "original_language": "en",
+      //   "original_title": "Guillermo del Toro's Pinocchio",
+      //   "overview":
+      //       "During the rise of fascism in Mussolini's Italy, a wooden boy brought magically to life struggles to live up to his father's expectations.",
+      //   "popularity": 858.296,
+      //   "poster_path": "/vx1u0uwxdlhV2MUzj4VlcMB0N6m.jpg",
+      //   "release_date": "2022-11-18",
+      //   "title": "Guillermo del Toro's Pinocchio",
+      //   "video": false,
+      //   "vote_average": 8.3,
+      //   "vote_count": 1768
+      // },
+      // {
+      //   "adult": false,
+      //   "backdrop_path": "/mYQSbZdGX0JJb49NLO04UA0iFEU.jpg",
+      //   "genre_ids": [28, 35, 80],
+      //   "id": 1015963,
+      //   "original_language": "en",
+      //   "original_title": "High Heat",
+      //   "overview":
+      //       "When the local mafia shows up to burn down her restaurant, Ana, a chef with a meticulous past, defends her turf and proves her knife skills both in and out of the kitchen.",
+      //   "popularity": 1024.101,
+      //   "poster_path": "/mmD0NVdhiRiCu64YKem5GK5PSfy.jpg",
+      //   "release_date": "2022-12-16",
+      //   "title": "High Heat",
+      //   "video": false,
+      //   "vote_average": 6,
+      //   "vote_count": 43
+      // },
+      // {
+      //   "adult": false,
+      //   "backdrop_path": "/8oj1pbizI6RS5xlyETmlWh9mVqN.jpg",
+      //   "genre_ids": [27],
+      //   "id": 955991,
+      //   "original_language": "en",
+      //   "original_title": "The Offering",
+      //   "overview":
+      //       "In the wake of a young Jewish girl’s disappearance, the son of a Hasidic funeral director returns home with his pregnant wife in hopes of reconciling with his father. Little do they know that directly beneath them in the family morgue, an ancient evil with sinister plans for the unborn child lurks inside a mysterious corpse.",
+      //   "popularity": 1016.672,
+      //   "poster_path": "/tbaTFgGIaTL1Uhd0SMob6Dhi5cK.jpg",
+      //   "release_date": "2023-01-11",
+      //   "title": "The Offering",
+      //   "video": false,
+      //   "vote_average": 5.2,
+      //   "vote_count": 27
+      // },
+      // {
+      //   "adult": false,
+      //   "backdrop_path": "/rodjjIJ8oh9nuBp86PhojcYHTEN.jpg",
+      //   "genre_ids": [28, 9648, 53, 80],
+      //   "id": 740952,
+      //   "original_language": "en",
+      //   "original_title": "Savage Salvation",
+      //   "overview":
+      //       "Newly engaged Shelby John and Ruby Red want a fresh start after their struggles with addiction, but when Shelby discovers his beloved Ruby dead on their porch, he embarks on a vengeful killing spree of the dealers who supplied her. Armed with nothing but adrenaline and a nail gun, Shelby begins to unleash chaos on the town’s criminal underbelly, as he hunt’s down crime lord Coyote. Sheriff Church must race against the clock to put an end to Shelby's vigilante justice before the entire town descends into a bloodbath.",
+      //   "popularity": 839.571,
+      //   "poster_path": "/fJRt3mmZEvf8gQzoNLzjPtWpc9o.jpg",
+      //   "release_date": "2022-12-02",
+      //   "title": "Savage Salvation",
+      //   "video": false,
+      //   "vote_average": 6.6,
+      //   "vote_count": 90
+      // },
+      // {
+      //   "adult": false,
+      //   "backdrop_path": "/qdFrqXYH6PtyAVlegub7bpoSgro.jpg",
+      //   "genre_ids": [16, 12, 35, 10751],
+      //   "id": 573171,
+      //   "original_language": "es",
+      //   "original_title": "Huevitos Congelados",
+      //   "overview":
+      //       "Follow the adventures of Toto and his family, who will have to travel to the South Pole to fulfill their promise to return a polar bear and some Spanish penguins to their home. In order to fulfill the promise, they will have to overcome some obstacles that will teach them how important teamwork is.",
+      //   "popularity": 668.142,
+      //   "poster_path": "/gBBCBMXKzWRADtliUYfV69aVIcz.jpg",
+      //   "release_date": "2022-12-14",
+      //   "title": "A Frozen Rooster",
+      //   "video": false,
+      //   "vote_average": 8.2,
+      //   "vote_count": 207
+      // },
+      // {
+      //   "adult": false,
+      //   "backdrop_path": "/xTsERrOCW15OIYl5aPX7Jbj38wu.jpg",
+      //   "genre_ids": [28, 18, 36],
+      //   "id": 724495,
+      //   "original_language": "en",
+      //   "original_title": "The Woman King",
+      //   "overview":
+      //       "The story of the Agojie, the all-female unit of warriors who protected the African Kingdom of Dahomey in the 1800s with skills and a fierceness unlike anything the world has ever seen, and General Nanisca as she trains the next generation of recruits and readies them for battle against an enemy determined to destroy their way of life.",
+      //   "popularity": 774.688,
+      //   "poster_path": "/438QXt1E3WJWb3PqNniK0tAE5c1.jpg",
+      //   "release_date": "2022-09-16",
+      //   "title": "The Woman King",
+      //   "video": false,
+      //   "vote_average": 7.8,
+      //   "vote_count": 1183
+      // },
+      // {
+      //   "adult": false,
+      //   "backdrop_path": "/ecaB1LUoQE1ylZJVF5KLRTkewt8.jpg",
+      //   "genre_ids": [28, 35, 80],
+      //   "id": 683328,
+      //   "original_language": "id",
+      //   "original_title": "The Big 4",
+      //   "overview":
+      //       "A by-the-book female detective teams up with four down-on-their-luck assassins to investigate her father's murder.",
+      //   "popularity": 670.541,
+      //   "poster_path": "/jrw684BhFJZ9Jac6KJda3hSQkxt.jpg",
+      //   "release_date": "2022-12-19",
+      //   "title": "The Big 4",
+      //   "video": false,
+      //   "vote_average": 7.1,
+      //   "vote_count": 121
+      // },
+      // {
+      //   "adult": false,
+      //   "backdrop_path": "/ofteFQqIntae7wqVAYYyXOCmkF1.jpg",
+      //   "genre_ids": [27, 53],
+      //   "id": 980078,
+      //   "original_language": "en",
+      //   "original_title": "Winnie the Pooh: Blood and Honey",
+      //   "overview":
+      //       "Christopher Robin is headed off to college and he has abandoned his old friends, Pooh and Piglet, which then leads to the duo embracing their inner monsters.",
+      //   "popularity": 725.977,
+      //   "poster_path": "/wtFwgFFk1ze789ghcadWGEVjj3N.jpg",
+      //   "release_date": "2023-01-27",
+      //   "title": "Winnie the Pooh: Blood and Honey",
+      //   "video": false,
+      //   "vote_average": 7,
+      //   "vote_count": 11
+      // },
+      // {
+      //   "adult": false,
+      //   "backdrop_path": "/6YRQ8l93ZEs6x4rZojWoHIWdguK.jpg",
+      //   "genre_ids": [28, 80],
+      //   "id": 1024546,
+      //   "original_language": "en",
+      //   "original_title": "Detective Knight: Rogue",
+      //   "overview":
+      //       "As Los Angeles prepares for Halloween, mask-wearing armed robbers critically wound detective James Knight’s partner in a shootout following a heist. With Knight in hot pursuit, the bandits flee L.A. for New York, where the detective’s dark past collides with his present case and threatens to tear his world apart…unless redemption can claim Knight first.",
+      //   "popularity": 652.677,
+      //   "poster_path": "/2wj5iUJ2B5AQ1lFctJgUrHHsp9B.jpg",
+      //   "release_date": "2022-10-21",
+      //   "title": "Detective Knight: Rogue",
+      //   "video": false,
+      //   "vote_average": 6.9,
+      //   "vote_count": 69
+      // },
+      // {
+      //   "adult": false,
+      //   "backdrop_path": "/xOcwcyLM2lqXCrZG8AIHC8DXElF.jpg",
+      //   "genre_ids": [27],
+      //   "id": 943221,
+      //   "original_language": "es",
+      //   "original_title": "Mal de ojo",
+      //   "overview":
+      //       "Nala, a thirteen-year-old girl from the city, travels with her family to her grandmother's home in the countryside, to try to find a cure for her little sister's mysterious illness - But she'll soon find her granny is not exactly what she seems...",
+      //   "popularity": 683.855,
+      //   "poster_path": "/sChhX2wWgVbTd6j38ADrAfHd4mE.jpg",
+      //   "release_date": "2022-09-22",
+      //   "title": "Mal de ojo",
+      //   "video": false,
+      //   "vote_average": 6.9,
+      //   "vote_count": 164
+      // },
+      // {
+      //   "adult": false,
+      //   "backdrop_path": "/cRdA9xjHBbobw4LJFsQ3j1CgpVq.jpg",
+      //   "genre_ids": [27],
+      //   "id": 663712,
+      //   "original_language": "en",
+      //   "original_title": "Terrifier 2",
+      //   "overview":
+      //       "After being resurrected by a sinister entity, Art the Clown returns to Miles County where he must hunt down and destroy a teenage girl and her younger brother on Halloween night.  As the body count rises, the siblings fight to stay alive while uncovering the true nature of Art's evil intent.",
+      //   "popularity": 659.352,
+      //   "poster_path": "/8gLhu8UFPZfH2Hv11JhTZkb9CVl.jpg",
+      //   "release_date": "2022-10-06",
+      //   "title": "Terrifier 2",
+      //   "video": false,
+      //   "vote_average": 7,
+      //   "vote_count": 983
+      // },
+      // {
+      //   "adult": false,
+      //   "backdrop_path": "/c9yVIqnrD6fyYhNzNcvAoU6CFG.jpg",
+      //   "genre_ids": [10749, 35],
+      //   "id": 866413,
+      //   "original_language": "en",
+      //   "original_title": "You People",
+      //   "overview":
+      //       "A new couple and their families reckon with modern love amid culture clashes, societal expectations and generational differences.",
+      //   "popularity": 734.593,
+      //   "poster_path": "/x5E4TndwASNkaK2hwgeYfsIVo2x.jpg",
+      //   "release_date": "2023-01-20",
+      //   "title": "You People",
+      //   "video": false,
+      //   "vote_average": 6,
+      //   "vote_count": 212
+      // },
+      // {
+      //   "adult": false,
+      //   "backdrop_path": "/zSqNRkzuJNWQJymKnCycQ5WxuuD.jpg",
+      //   "genre_ids": [16, 12, 10751, 28, 35, 878],
+      //   "id": 985103,
+      //   "original_language": "tr",
+      //   "original_title": "Kral Sakir: Geri Dönüsüm",
+      //   "overview":
+      //       "Scientists trying to solve the environmental crisis of pollution devise a way to send the collected garbage into space via rocket ships. When this garbage starts to land on alien planets, the outraged aliens head to Earth for revenge. King Shakir and his family must do their best to protect the world from alien destruction.",
+      //   "popularity": 735.02,
+      //   "poster_path": "/y0kGpKB2elapYboHklgn9wLTj9x.jpg",
+      //   "release_date": "2022-07-14",
+      //   "title": "King Shakir Recycle",
+      //   "video": false,
+      //   "vote_average": 5.7,
+      //   "vote_count": 3
+      // }
+    ],
+    "total_pages": 36948,
+    "total_results": 738958
+  };
+}
